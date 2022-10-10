@@ -1,5 +1,9 @@
-﻿#include <iostream>
-#include <list>
+#include <iostream>
+#include <clocale>
+#include <cstdlib>
+#include <string>
+
+#include <windows.h>
 using namespace std;
 
 
@@ -44,20 +48,39 @@ void show() {
 
 int main()
 {
-    setlocale(LC_ALL, "rus");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    setlocale(LC_ALL, "Russian");
 
+    string flag;
+    string name;
+    int avg;
+    int type;
 
-   
+    while (true) {
+        cout << "Завершить ввод? "; cin >> flag;
+        if (flag == "Да") {
+            break;
+        }
+        else {
+            cout << "Введите ФИО "; cin >> name;
+            cout << "Введите ср.оценку "; cin >> avg;
+            cout << "Введите бюджет - 0 , внебюджет - 1 "; cin >> type;
 
+            STUDENT list = { name,avg };
+            add_obj(tail, list);
+        }
+        
 
-    
-    STUDENT list = {"Алекс",5,true};
+    }
 
-    add_obj(tail, list);
+  
+
 
     show();
 
 
-    return 0; 
+    return 0;
 }
+
 
