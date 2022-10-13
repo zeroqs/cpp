@@ -36,7 +36,6 @@ int main()
     } 
 
     cout << endl;
-    int sum = 0;
     for (int i = 0; i < N; i++)
     {
         int temp_sum = 0;
