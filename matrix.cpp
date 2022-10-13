@@ -6,6 +6,7 @@ using namespace std;
 
 
 
+
 int main()
 {
     setlocale(LC_ALL, "rus");
@@ -16,31 +17,46 @@ int main()
 
     int array[N][M];
 
-
+    // Ввод матрицы
     for (int i = 0; i < N; i++)
     {
-        for (int j = 0; j < M; j++)
-            array[i][j] = rand() % 10 -5;
-    }
+        for (int j = 0; j < M; j++) {
+            array[i][j] = rand() % 50 - 10;
+        }
+    } 
 
-    cout << endl;
-
+    // Вывод матрицы
     for (int i = 0; i < N; i++)
     {
-        for (int j = 0; j < M; j++)
+        for (int j = 0; j < M; j++) {
             cout << array[i][j] << ' ';
+        }
         cout << endl;
 
-    }
-    bool flag = false;
+    } 
 
+    cout << endl;
+    int sum = 0;
     for (int i = 0; i < N; i++)
     {
-        for (int j = 0; j < M; j++)
-            if (array[i][j] == -3) flag = true;
+        int temp_sum = 0;
+        bool flag = false;
+
+        for (int j = 0; j < M; j++) 
+        {
+            temp_sum += array[i][j];
+            if (array[i][j] < 0) {
+                flag = true;
+            }
+
+        }
+        if (flag) {
+            cout << "Строчка " << i + 1 << " " << temp_sum << endl;
+        }
+
 
     }
-    cout << flag;
+    
 
     return 0; 
 }
