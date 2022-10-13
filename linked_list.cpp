@@ -36,12 +36,36 @@ void add_obj(LIST* obj, STUDENT student) {
     if (ptr->next == NULL) tail = ptr;
 }
 
-void show() {
-    LIST* c = head;
+void del_obj(string del_name) {
+    LIST* obj = head; 
 
-    while (c != NULL) {
-        cout << c->student.name << endl;
-        c = c->next;
+    while (obj != NULL) {
+        if (obj->student.name == del_name) {
+            LIST* temp_next = obj->next;
+            LIST* temp_prev = obj->prev;
+            cout << "Студент " << obj->student.name << " Удалён " << endl;
+            delete obj; 
+            if (temp_prev != NULL) temp_prev->next = temp_next;
+            else head = temp_next; 
+            if (temp_next != NULL) temp_next->prev = temp_prev;
+            else tail = temp_prev; 
+            break;
+        }
+         
+        obj = obj->next;
+        cout << "Студента нет в списке " << endl;
+    }
+    
+
+    
+}
+
+void show() {
+    LIST* obj = head;
+
+    while (obj != NULL) {
+        cout << obj->student.name << endl;
+        obj = obj->next;
     }
 }
 
@@ -52,35 +76,63 @@ int main()
     SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "Russian");
 
-    string flag;
+    bool flag = true;
     string name;
     int avg;
     int type;
+    int action; 
+    string del_name;
 
-    while (true) {
-        cout << "Завершить ввод? "; cin >> flag;
-        if (flag == "Да") {
-            break;
-        }
-        else {
-            cout << "Введите ФИО "; cin >> name;
-            cout << "Введите ср.оценку "; cin >> avg;
-            cout << "Введите бюджет - 0 , внебюджет - 1 "; cin >> type;
+    
 
-            STUDENT list = { name,avg };
-            add_obj(tail, list);
-        }
-        
+    while (flag)
+    {
+        cout << "=============================" << endl;
+        cout << "0 - Выйти " << endl;
+        cout << "1 - Добавить студента " << endl;
+        cout << "2 - Вывести всех студентов " << endl;
+        cout << "3 - Удалить студента " << endl;
+        cout << "=============================" << endl;
+        cin >> action;
+        cout << endl;
+        switch (action)
+        {
+            case 0:
+                flag = false;
+                break;
+            case 1:
+            {
+                cout << "Введите ФИО ";
+                cin.ignore();
+                getline(cin, name);
+
+                cout << "Введите ср.оценку "; cin >> avg;
+                cout << "Введите бюджет - 0 , внебюджет - 1 "; cin >> type;
+
+                STUDENT list = { name,avg };
+                add_obj(tail, list);
+                break;
+            }
+            case 2:
+                show();
+                cout << '\n';
+                break; 
+            case 3:
+                cout << "ФИО удаляемого студента ";
+                cin.ignore();
+                getline(cin, del_name);
+                del_obj(del_name);
+                break;
+            default:
+                cout << "Всегда" << '\n';
+                break;
+            }
 
     }
 
-  
 
 
-    show();
 
 
     return 0;
 }
-
-
