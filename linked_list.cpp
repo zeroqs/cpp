@@ -2,8 +2,9 @@
 #include <clocale>
 #include <cstdlib>
 #include <string>
-
+#include <utility>
 #include <windows.h>
+
 using namespace std;
 
 
@@ -70,6 +71,48 @@ void show() {
 }
 
 
+void sort() {
+    LIST* obj = head;
+
+    while (obj && obj->next)
+    {
+
+        LIST* next = obj->next;
+        while (next)
+        {
+            if (obj->student.name > next->student.name)
+            {
+                swap(next->student.name, obj->student.name);
+            }
+            next = next->next;
+        }
+        obj = obj->next;
+    }
+}
+
+void show_avg() {
+    LIST* obj = head;
+
+    while (obj != NULL) {
+        if (obj->student.avg_score > 3) {
+            cout << obj->student.name << endl;
+        }
+        obj = obj->next;
+    }
+}
+
+void show_type() {
+    LIST* obj = head;
+
+    while (obj != NULL) {
+        if (obj->student.student_type == 1) {
+            cout << obj->student.name << endl;
+        }
+        obj = obj->next;
+    }
+}
+
+
 int main()
 {
     SetConsoleCP(1251);
@@ -114,6 +157,7 @@ int main()
                 break;
             }
             case 2:
+                sort();
                 show();
                 cout << '\n';
                 break; 
@@ -129,10 +173,6 @@ int main()
             }
 
     }
-
-
-
-
 
     return 0;
 }
