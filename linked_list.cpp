@@ -11,7 +11,7 @@ using namespace std;
 typedef struct { // Данные в списке
     string name;
     int avg_score;
-    bool student_type;
+    int student_type;
 }STUDENT;
 
 typedef struct link_list { // Объект списка
@@ -65,7 +65,7 @@ void show() {
     LIST* obj = head;
 
     while (obj != NULL) {
-        cout << obj->student.name << endl;
+        cout << obj->student.name << " " << obj->student.avg_score << " " << obj->student.student_type << endl;
         obj = obj->next;
     }
 }
@@ -82,7 +82,7 @@ void sort() {
         {
             if (obj->student.name > next->student.name)
             {
-                swap(next->student.name, obj->student.name);
+                swap(next->student, obj->student);
             }
             next = next->next;
         }
@@ -152,7 +152,7 @@ int main()
                 cout << "Введите ср.оценку "; cin >> avg;
                 cout << "Введите бюджет - 0 , внебюджет - 1 "; cin >> type;
 
-                STUDENT list = { name,avg };
+                STUDENT list = { name,avg,type };
                 add_obj(tail, list);
                 break;
             }
