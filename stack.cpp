@@ -41,7 +41,6 @@ Stack::~Stack() {
 void Stack::push(int x)
 {
 
-    cout << x;
     arr[++top] = x;
 }
 
@@ -72,31 +71,37 @@ int main()
     cout << "Стек:";
     srand((unsigned int)time(NULL));
     for(int i = 0;i<size;i++) {
-        maoStack.push(-20 + rand() % (80));
-        std::cout << ", ";
+        int rand_number = -20 + rand() % (80);
+        maoStack.push(rand_number);
+        std::cout << rand_number << ", ";
     }
     cout << "." << endl;
-    cout << "Теперь удалим из стека элементы" << endl;
-    // создадим новый стек, такой же как прошлый, но пустой
     Stack newMaoStack(size);
     Stack secondStack(size);
     for(int i = 0;i<size;i++) {
         int el = maoStack.pop();
-        std::cout << " удалено."<< endl;
         if(el%7!=0) {
-            std::cout << "В новый стек записали ";
             newMaoStack.push(el);
-            std::cout << "."<< endl;
-        } else {
+        } else if(el%7==0) {
             secondStack.push(el);
         }
     }
-    cout << "Новый стек" << endl;
+    cout << "\n";
+    cout << "стек не кратных 7" << endl;
     
     for(int i = 0;i<size;i++) {
         newMaoStack.pop(); 
         std::cout << ", ";
     }
+    cout << "\n";
+    
+      cout << "стек кратных 7" << endl;
+    
+    for(int i = 0;i<size;i++) {
+        secondStack.pop(); 
+        std::cout << ", ";
+    }
+
 
     
 
