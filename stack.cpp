@@ -1,110 +1,91 @@
-#include <iostream>
-#include <cstdlib>
-using namespace std;
- 
-// создадим стек. как основу используем массив
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
 
-// Определяем емкость stack по умолчанию
-#define SIZE 10
- 
-// Класс для представления stack
-class Stack
-{
-    int *arr;
-    int top;
-    int capacity;
- 
-public:
-    Stack(int size = SIZE);         // конструктор
-    ~Stack();                       // деструктор
- 
-    void push(int);
-    int pop();
-    int peek();
-
+struct elt {
+    struct elt *next;
+    int value;
 };
- 
-// Конструктор для инициализации stack
-Stack::Stack(int size)
+
+/* 
+ * We could make a struct for this,
+ * but it would have only one component,
+ * so this is quicker.
+ */
+typedef struct elt *Stack;
+
+#define STACK_EMPTY (0)
+
+/* push a new value onto top of stack */
+void
+stackPush(Stack *s, int value)
 {
-    arr = new int[size];
-    capacity = size;
-    top = -1;
-}
- 
-// Деструктор для освобождения памяти, выделенной для stack
-Stack::~Stack() {
-    delete[] arr;
-}
+    struct elt *e;
 
-// Вспомогательная функция для добавления элемента `x` в stack
-void Stack::push(int x)
-{
+    e = malloc(sizeof(struct elt));
+    assert(e);
 
-    arr[++top] = x;
-}
-
-// Вспомогательная функция для извлечения верхнего элемента из stack
-int Stack::pop()
-{
-
-    cout << peek();
- 
-    // уменьшаем размер stack на 1 и (необязательно) возвращаем извлеченный элемент
-    return arr[top--];
+    e->value = value;
+    e->next = *s;
+    *s = e;
 }
 
-
-// Вспомогательная функция для возврата верхнего элемента stack
-int Stack::peek()
+int
+stackEmpty(const Stack *s)
 {
-    return arr[top];
+    return (*s == 0);
 }
 
-
-int main()
+int
+stackPop(Stack *s)
 {
-    int size;
-    std::cout << "Какова размерность стека? ";
-    std::cin >> size;
-    Stack maoStack(size);
-    cout << "Стек:";
-    srand((unsigned int)time(NULL));
-    for(int i = 0;i<size;i++) {
-        int rand_number = -20 + rand() % (80);
-        maoStack.push(rand_number);
-        std::cout << rand_number << ", ";
-    }
-    cout << "." << endl;
-    Stack newMaoStack(size);
-    Stack secondStack(size);
-    for(int i = 0;i<size;i++) {
-        int el = maoStack.pop();
-        if(el%7!=0) {
-            newMaoStack.push(el);
-        } else if(el%7==0) {
-            secondStack.push(el);
-        }
-    }
-    cout << "\n";
-    cout << "стек не кратных 7" << endl;
-    
-    for(int i = 0;i<size;i++) {
-        newMaoStack.pop(); 
-        std::cout << ", ";
-    }
-    cout << "\n";
-    
-      cout << "стек кратных 7" << endl;
-    
-    for(int i = 0;i<size;i++) {
-        secondStack.pop(); 
-        std::cout << ", ";
+    int ret;
+    struct elt *e;
+
+    assert(!stackEmpty(s));
+
+    ret = (*s)->value;
+
+    /* patch out first element */
+    e = *s;
+    *s = e->next;
+
+    free(e);
+
+    return ret;
+}
+
+/* print contents of stack on a single line */
+void
+stackPrint(const Stack *s)
+{
+    struct elt *e;
+
+    for(e = *s; e != 0; e = e->next) {
+        printf("%d ", e->value);
     }
 
+    putchar('\n');
+}
 
-    
+int
+main(int argc, char **argv)
+{
+    int i;
+    Stack s;
 
-    
+    s = STACK_EMPTY;
+
+    for(i = 0; i < 5; i++) {
+        printf("push %d\n", i);
+        stackPush(&s, i);
+        stackPrint(&s);
+    }
+
+    while(!stackEmpty(&s)) {
+        printf("pop gets %d\n", stackPop(&s));
+        stackPrint(&s);
+    }
+
     return 0;
 }
