@@ -32,8 +32,9 @@ void Merg(int arr[], int begin, int end)
 		result_array[index_of_result_array] = arr[right_array_index]; right_array_index++; index_of_result_array++;
 	}
 
-	for (left_array_index = 0; left_array_index < index_of_result_array; left_array_index++)
+	for (left_array_index = 0; left_array_index < index_of_result_array; left_array_index++) {
 		arr[begin + left_array_index] = result_array[left_array_index];
+	}
 }
 
 void MergSort(int* arr, int left, int right)
@@ -56,8 +57,6 @@ void MergSort(int* arr, int left, int right)
 
 void input(int* initial_array, int& n)
 {
-	cout << "Введите количество элементов массива ";
-	cin >> n;
 	for (int i = 0; i < n; i++)
 	{
 		initial_array[i] = -20 + rand() % (80);
@@ -72,12 +71,14 @@ void print(int* initial_array, int n)
 
 }
 
-void main()
+int main()
 {
 	srand(time(NULL));
 	setlocale(LC_ALL, "rus");
 
-	int n, initial_array[nmax];
+	int n;
+	cin >> n;
+	int* initial_array = new int[n];
 
 	input(initial_array, n);
 
@@ -88,6 +89,5 @@ void main()
 
 	cout << "Отсортированный массив:\n";
 	print(initial_array, n);
-	system("pause");
-
+	return 0;
 }
