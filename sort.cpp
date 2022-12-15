@@ -1,92 +1,93 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<iostream>
 #include <time.h>
 
+using namespace std;
 
-// Объединяем два отсортированных подмассива `arr[low…mid]` и `arr[mid+1…high]`
-void Merge(int targer_array[], int array_left[], int array_right[])
+const int nmax = 1000;
+
+void Merg(int arr[], int begin, int end)
 {
-    int array_left_index = 0;
-    int array_right_index = 0;
-    int index_of_insert_min_number_in_array = 0; 
-    int array_left_len = sizeof(array_left) / sizeof(array_left[0]);
-    int array_right_len = sizeof(array_right) / sizeof(array_right[0]);
+	int left_array_index = begin,
+		mid = begin + (end - begin) / 2,
+		right_array_index = mid + 1,
+		index_of_result_array = 0,
+		result_array[nmax];
 
-    while (array_left_index < array_left_len && (array_right_index < array_right_len))
-    {   
-        if (array_left[array_left_index] <= array_right[array_right_index])
-        {
-            target_array[index_of_insert_min_number_in_array] = array_left[array_left_index];
-            array_left_index++;
-        }
-        else
-        {
-            target_array[index_of_insert_min_number_in_array] = array_right[array_right_index];
-            array_right_index++;
-        }
-        index_of_insert_min_number_in_array;
-    }
-    while (array_left_index < array_left_len)
-    {
-        target_array[index_of_insert_min_number_in_array] = array_left[array_left_index];
-        array_left_index++;
-        index_of_insert_min_number_in_array;
+	while (left_array_index <= mid && right_array_index <= end) {
 
-    } 
-    while (array_right_index < array_right_len)
-    {
-        target_array[index_of_insert_min_number_in_array] = array_right[array_right_index];
-        array_right_index++;
-        index_of_insert_min_number_in_array;
+		if (arr[left_array_index] <= arr[right_array_index]) {
+			result_array[index_of_result_array] = arr[left_array_index]; left_array_index++;
+		}
+		else {
+			result_array[index_of_result_array] = arr[right_array_index]; right_array_index++;
+		}
+		index_of_result_array++;
+	}
 
-    }
+	while (left_array_index <= mid) {
+		result_array[index_of_result_array] = arr[left_array_index]; left_array_index++; index_of_result_array++;
+	}
+
+	while (right_array_index <= end) {
+		result_array[index_of_result_array] = arr[right_array_index]; right_array_index++; index_of_result_array++;
+	}
+
+	for (left_array_index = 0; left_array_index < index_of_result_array; left_array_index++)
+		arr[begin + left_array_index] = result_array[left_array_index];
 }
 
-// Сортируем массив `arr[low…high]`, используя вспомогательный массив `aux`
-void merge_sort(int arr[], int aux[], int low, int high)
+void MergSort(int* arr, int left, int right)
 {
-    int array_len = sizeof(array) / sizeof(array[0]);
-
-    if (array_len < 2) {
-        return;
-    }
-    
-    int mid = array_len / 2;
-    int* left = new int[mid];
-    int* right = new int[array_len - mid];
-
-    for (int i = 0; i < mid; i++)
-    {
-        left[i] = array[i];
-    }
-    for (int i = mid; i < array_len; i++)
-    {
-        right[i] = array[i];
-    }
-    MergeSort(left);
-    MergeSort(right);
-    Merge(array, left, right);     // объединить два полупрогона.
+	if (left < right) // проверка на одноелементный массив
+		if (right - left == 1) // если в массиве два елемента - меняем их местами  
+		{ 
+			if (arr[right] < arr[left]) {
+				swap(arr[left], arr[right]);
+			}
+		}
+		else {
+			MergSort(arr, left, left + (right - left) / 2); // левый массив
+			MergSort(arr, left + (right - left) / 2 + 1, right); // правый массив
+			Merg(arr, left, right);
+		}
 }
 
 
-int main(void)
+
+void input(int* initial_array, int& n)
 {
-    int n;
-    cin >> n;
-    srand(time(NULL));
-    int* initial_array = new int[n];
+	cout << "Введите количество элементов массива ";
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		initial_array[i] = -20 + rand() % (80);
+	}
 
-    // генерируем случайный ввод целых чисел
-    for (int i = 0; i < n; i++) {
-        initial_array[i] = -20 + rand() % (80);
-    }
+}
+void print(int* initial_array, int n)
+{
+	for (int i = 0; i < n; i++)
+		cout << initial_array[i] << " ";
+	cout << "\n";
 
-    // сортируем массив `arr`, используя вспомогательный массив `aux`
-    merge_sort(initial_array, aux, 0, N - 1);
+}
 
-    for (int i = 0; i < N; i++) {
-        printf("%d ", initial_array[i]);
-    }
+void main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "rus");
 
-    return 0;
+	int n, initial_array[nmax];
+
+	input(initial_array, n);
+
+	cout << "Исходный массив:\n";
+	print(initial_array, n);
+
+	MergSort(initial_array, 0, n - 1);
+
+	cout << "Отсортированный массив:\n";
+	print(initial_array, n);
+	system("pause");
+
 }
