@@ -1,100 +1,132 @@
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
+
 using namespace std;
 
-typedef struct obj {
-    struct obj* next;
-    int number;
-}OBJ;
+struct node {
 
-typedef struct obj* Stack;
+    node* next;
 
-#define STACK_EMPTY (0)
+    int info;
 
+};
 
-void push(Stack* s, int number) {
-    OBJ* ptr = new OBJ;
+void push(node* next, node* End) {
 
-    ptr->number = number;
-    ptr->next = *s;
-    *s = ptr;
+    node* el = new node;
+
+    cout << "Введите элемент очереди:";
+
+    cin >> el->info;
+
+    el->next = NULL;
+
+    End->next = el;
+
+    End = el;
+
 }
-//void pop() {
-//    if (top == NULL) return;
-//    OBJ* ptr = top->next;
-//
-//    cout << top->data.number << " deleted\n";
-//    delete top;
-//    top = ptr;
-//}
-void stackPrint(const Stack* s) {
-    OBJ* ptr = new OBJ;
 
+void pop(node* el, node* Begin) {
 
-    for (ptr = *s; ptr != 0; ptr = ptr->next) {
-        printf("%d ", ptr->number);
+    el = Begin;
+
+    Begin = Begin->next;
+
+    delete el;
+
+}
+
+void peek(node* el) {
+
+    cout << "Значение в начале очереди: ";
+
+    cout << el->info << endl;
+
+}
+
+void queue_List(node* Begin) {
+
+    node* current_element = Begin;
+
+    cout << "Элементы очереди: ";
+
+    while (current_element) {
+
+        cout << current_element->info << " ";
+
+        current_element = current_element->next;
+
     }
 
-    putchar('\n');
-}
-int stackEmpty(const Stack* s) {
-    return (*s == 0);
+    cout << endl;
+
 }
 
-int stackPop(Stack* s)
-{
-    int ret;
-    OBJ* ptr = new OBJ;
+void isEmpty(node* queue) {
 
-    assert(!stackEmpty(s));
+    if (queue == NULL)
 
-    ret = (*s)->number;
+        cout << "Очередь пуста!" << endl;
 
-    /* patch out first element */
-    ptr = *s;
-    *s = ptr->next;
+    else
 
+        cout << "Очередь имеет элементы" << endl;
 
-    return ret;
-}
-
-void task(const Stack* s) {
-    OBJ* ptr = new OBJ;
-
-
-    
 }
 
 int main()
 {
-    srand((unsigned int)time(NULL));
-    int n;
-    Stack s = STACK_EMPTY;
-    Stack q = STACK_EMPTY;
-    Stack r = STACK_EMPTY;
-    cin >> n;
-    for (int i = 0; i < n; i++) {
-        int rand_number = -20 + rand() % (80);
-        push(&s, rand_number);
+    setlocale(LC_ALL, "Russian");
+
+    int k = 1;
+
+    cout << "Создание очереди. Пожалуйста, введите первый элемент очереди:" << endl;
+
+    node* Begin, * End;
+
+    node* el = new node;
+
+    cin >> el->info;
+
+    el->next = NULL;
+
+    Begin = End = el;
+
+    while (k) {
+
+        cout << "1 - добавление элемента в конец очереди\n2 - удаление элемента из начала очереди\n3 - функция определения значения в начале очереди\n4 - функция вывода элементов очереди на экран\n5 - функция определения пуста очередь или нет\n" << "0 - выход" << endl;
+
+        cin >> k;
+
+        if (k == 0)
+
+            return 0;
+
+        if (k == 1)
+
+            push(el, End);
+
+        if (k == 2)
+
+            pop(el, Begin);
+
+        if (k == 3)
+
+            peek(Begin);
+
+        if (k == 4)
+
+            queue_List(Begin);
+
+        if (k == 5)
+
+            isEmpty(el);
+
     }
-    stackPrint(&s);
+
     cout << endl;
 
-    while (!stackEmpty(&s)) {
-        int temp = stackPop(&s);
-        if (temp % 7 == 0) {
-            push(&q, temp);
-        }
-        else {
-            push(&r, temp);
-
-        }
-    }
-    stackPrint(&q);
-    stackPrint(&r);
-
+    system("pause");
 
     return 0;
 }
